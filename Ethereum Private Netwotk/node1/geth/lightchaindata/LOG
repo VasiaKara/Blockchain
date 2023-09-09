@@ -1,0 +1,8 @@
+=============== Mar 20, 2021 (EET) ===============
+20:11:42.158615 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:11:42.207742 db@open opening
+20:11:42.211154 version@stat F·[] S·0B[] Sc·[]
+20:11:42.261802 db@janitor F·2 G·0
+20:11:42.261802 db@open done T·53.1644ms
+20:11:42.290308 db@close closing
+20:11:42.291866 db@close done T·1.5583ms

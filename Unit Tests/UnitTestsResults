@@ -1,0 +1,24 @@
+truffle(development)> test
+Using network 'development'.
+
+
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+  Contract: Auction unit test 1
+    ✓ withdraw() should fail if msg.sender is the highestBidder (757ms)
+
+  Contract: Auction unit test 2
+    ✓ HighestBid should get updated after a new bid (158ms)
+
+  Contract: Auction unit test 3
+    ✓ Contract's balance should get updated after a new bid (78ms)
+
+  Contract: Auction unit test 4
+    ✓ withdraw() should not fail if msg.sender is not the highestBidder (232ms)
+
+
+  4 passing (1s)

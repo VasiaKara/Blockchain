@@ -1,0 +1,59 @@
+//Φτιάχνω directory για κάθε node.
+mkdir node1 
+mkdir node2 
+mkdir node3
+
+//Φτιάχνω account για κάθε node.
+geth --datadir node1 account new
+geth --datadir node2 account new
+geth --datadir node3 account new
+
+//Δημιουργώ το πρώτο block, το genesis.
+touch genesis.json
+
+//Χρησιμοποιώ το ίδιο αρχείο genesis για όλα τα nodes.
+geth --datadir node1 init genesis.json
+geth --datadir node2 init genesis.json
+geth --datadir node3 init genesis.json
+
+//Ξεκινάω τα nodes.
+geth --identity "Node 1" --datadir node1 --nat "extip:127.0.0.1" --port 50001 --nodiscover --networkid 1000 --http --http.port 51001 --http.api "eth,net,web3,miner,admin,personal" --http.corsdomain "*" --allow-insecure-unlock -ipcdisable
+geth --identity "Node 2" --datadir node2 --nat "extip:127.0.0.1" --port 50005 --nodiscover --networkid 1000 --http --http.port 55005 --http.api "eth,net,web3,miner,admin,personal" --http.corsdomain "*" --allow-insecure-unlock -ipcdisable
+geth --identity "Node 3" --datadir node3 --nat "extip:127.0.0.1" --port 50003 --nodiscover --networkid 1000 --http --http.port 53003 --http.api "eth,net,web3,miner,admin,personal" --http.corsdomain "*" --allow-insecure-unlock -ipcdisable
+
+//Συνδέομαι με consoles στα nodes.
+geth attach http://localhost:51001
+geth attach http://localhost:55005
+geth attach http://localhost:53003
+
+//Παίρνω το enode property κάθε node (σε κάθε console).
+admin.nodeInfo.enode
+
+//Συνδέω τα 3 nodes μεταξύ τους.
+admin.addPeer("enode://85e31cdbaa22ef6dfac14419db1670906ddb7356d86c01b5a059e749a8621dd02fafb9153a9049dae2a8e5cd372358388c9c9b4c3dce5a0102b4a8b1bc91eed8@127.0.0.1:50005?discport=0") //ton 1o me ton 2o sto console tou 1ou
+admin.addPeer("enode://242b5c3522a06c17f3258088419a03d6c898eaa99df89e321cb7a3c798a29338f6a7e61af02ea95d71263777a0c719e404b5ed66d185fc9c0e67f36a0f2e97c3@127.0.0.1:50003?discport=0") //ton 1o me ton 3o sto console tou 1ou
+admin.addPeer("enode://242b5c3522a06c17f3258088419a03d6c898eaa99df89e321cb7a3c798a29338f6a7e61af02ea95d71263777a0c719e404b5ed66d185fc9c0e67f36a0f2e97c3@127.0.0.1:50003?discport=0") //ton 2o me ton 3o sto console tou 2ou
+
+//Ελέγχω αν έχουν γίνει όλες οι συνδέσεις.
+net.peerCount
+
+//Σιγουρεύω ότι το block reward θα πάει στο σωστό account (αρχικά δε θα έχει τιμή).
+miner.etherbase
+
+//Κάνω set στο δικό μου account.
+ether.setEtherbase(eth.accounts[0])
+
+//Ξεκινάω το mining με ένα thread.
+miner.start(1)
+
+//Ελέγχω αν τα nodes που θα κάνω το transaction έχουν αρκετό balance. 
+eth.getBalance(eth.accounts[0])
+
+//Unlock to account.
+web3.personal.unlockAccount(eth.accounts[0],"kddyev",6000)
+
+//Στέλνω το transaction.
+eth.sendTransaction({from:eth.accounts[0], to:0x04C2422d36E05ed190fcED6fB44Bd3D957B15C2F,value:100 })
+
+//Κλείνω το miner.
+miner.stop()
